@@ -41,5 +41,23 @@ namespace GossipGastropodsBackEnd.Controllers
             context.SaveChanges();
             return Ok(new CommentResponse(comment, currentUser));
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteComment(int id)
+        {
+            Comment comment = context.Comments.FirstOrDefault(c => c.Id == id);
+            if (comment == null)
+                return NotFound();
+            else if (comment.UserGuid != currentUser.GUID)
+                return Forbid();
+
+            context.Comments.Remove(comment);
+            context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
