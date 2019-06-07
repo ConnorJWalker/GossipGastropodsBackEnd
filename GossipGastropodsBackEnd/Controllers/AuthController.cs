@@ -32,9 +32,20 @@ namespace GossipGastropodsBackEnd.Controllers
             return Ok(new { Token = auth.SignUp(request) });
         }
 
+        [HttpPost("login")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public IActionResult LogIn(LoginRequest request)
         {
-            return NotFound();
+            object error = new { Error = "Incorrect email or password" };
+            User user = context.Users.FirstOrDefault(u => u.Email == request.Email.ToLower());
+            if (user == null)
+                return BadRequest(error);
+
+            string token = auth.LogIn(user, request);
+            if (token == null)
+                return BadRequest(error);
+            return Ok(new { Token = token });
         }
     }
 }

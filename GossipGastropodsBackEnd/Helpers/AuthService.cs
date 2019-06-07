@@ -13,6 +13,7 @@ namespace GossipGastropodsBackEnd.Helpers
     {
         string GenerateJwt(User user);
         string SignUp(SignupRequest request);
+        string LogIn(User user, LoginRequest request);
     }
 
     public class AuthService : IAuthService
@@ -32,6 +33,14 @@ namespace GossipGastropodsBackEnd.Helpers
             context.SaveChanges();
 
             return GenerateJwt(user);
+        }
+
+        public string LogIn(User user, LoginRequest request)
+        {
+            if (BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+                return GenerateJwt(user);
+            else
+                return null;
         }
 
         public string GenerateJwt(User user)

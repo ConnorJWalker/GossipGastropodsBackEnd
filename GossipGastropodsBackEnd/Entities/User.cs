@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography;
 using GossipGastropodsBackEnd.Models.Http.Requests.Auth;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace GossipGastropodsBackEnd.Entities
 {
@@ -22,22 +20,8 @@ namespace GossipGastropodsBackEnd.Entities
             FirstName = request.FirstName;
             LastName = request.LastName;
             Email = request.Email.ToLower();
-            Password = HashPassword(request.Password);
+            Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
             ProfilePicture = defaultProfilePicture;
-        }
-
-        private string HashPassword(string password)
-        {
-            byte[] salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-                rng.GetBytes(salt);
-
-            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 1000,
-                numBytesRequested: 256 / 8));
         }
     }
 }
