@@ -19,6 +19,12 @@ namespace GossipGastropodsBackEnd
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureKestrel(x => x.AddServerHeader = false)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile("env.json", optional: false, reloadOnChange: true);
+                })
                 .UseStartup<Startup>();
     }
 }
