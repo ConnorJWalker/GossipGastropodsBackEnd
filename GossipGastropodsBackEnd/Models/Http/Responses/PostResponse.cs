@@ -15,8 +15,19 @@ namespace GossipGastropodsBackEnd.Models.Http.Responses
 
         public PostResponse(Post post)
         {
-            Id = post.Id;
+            Init(post);
             Owner = new UserResponse(post.Owner);
+        }
+
+        public PostResponse(Post post, CurrentUser user)
+        {
+            Init(post);
+            Owner = new UserResponse(user);
+        }
+
+        private void Init(Post post)
+        {
+            Id = post.Id;
             Body = post.Body;
             IsEdited = post.IsEdited;
             FilePaths = post.FilePaths;

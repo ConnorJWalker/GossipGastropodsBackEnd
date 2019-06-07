@@ -18,6 +18,14 @@ namespace GossipGastropodsBackEnd.Models.Http.Responses
             ProfilePicture = user.ProfilePicture;
         }
 
+        public UserResponse(CurrentUser user)
+        {
+            Guid = user.GUID;
+            Names = new UsersNames(user);
+            ProfileURL = "Todo";
+            ProfilePicture = user.ProfilePicture;
+        }
+
         public class UsersNames
         {
             public string FirstName { get; set; }
@@ -25,6 +33,13 @@ namespace GossipGastropodsBackEnd.Models.Http.Responses
             public string FullName { get; set; }
 
             public UsersNames(User user)
+            {
+                FirstName = user.FirstName;
+                LastName = user.LastName;
+                FullName = FirstName + " " + LastName;
+            }
+
+            public UsersNames(CurrentUser user)
             {
                 FirstName = user.FirstName;
                 LastName = user.LastName;

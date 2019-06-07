@@ -45,7 +45,7 @@ namespace GossipGastropodsBackEnd.Controllers
             context.Posts.Add(post);
             context.SaveChanges();
 
-            return Created("", new { Post = post });
+            return Created("", new PostResponse(post, currentUser));
         }
     }
 }
