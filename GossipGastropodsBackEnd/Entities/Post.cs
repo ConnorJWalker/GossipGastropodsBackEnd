@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GossipGastropodsBackEnd.Models;
 using GossipGastropodsBackEnd.Models.Http.Requests.Posts;
 
@@ -14,6 +15,7 @@ namespace GossipGastropodsBackEnd.Entities
         public DateTime CreatedAt { get; set; }
 
         public User Owner { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public Post() { }
 
