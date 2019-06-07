@@ -32,7 +32,7 @@ namespace GossipGastropodsBackEnd.Controllers
         [ProducesResponseType(200)]
         public IActionResult GetPosts()
         {
-            List<Post> posts = context.Posts.Include(p => p.Owner).ToList();
+            List<Post> posts = context.Posts.Include(p => p.Owner).Include(p => p.Comments).ToList();
             return Ok(PostResponse.GetResponseList(posts));
         }
 

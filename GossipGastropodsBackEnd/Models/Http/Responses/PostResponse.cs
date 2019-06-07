@@ -12,11 +12,13 @@ namespace GossipGastropodsBackEnd.Models.Http.Responses
         public bool IsEdited { get; set; }
         public string FilePaths { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<CommentResponse> Comments { get; set; }
 
         public PostResponse(Post post)
         {
             Init(post);
             Owner = new UserResponse(post.Owner);
+            Comments = CommentResponse.GetResponseList(post.Comments);
         }
 
         public PostResponse(Post post, CurrentUser user)
