@@ -24,6 +24,10 @@ namespace GossipGastropodsBackEnd.Entities
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId);
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Owner)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserGuid);
         }
 
         public DbSet<User> Users { get; set; }

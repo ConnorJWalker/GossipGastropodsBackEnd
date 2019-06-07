@@ -31,15 +31,15 @@ namespace GossipGastropodsBackEnd.Migrations
 
                     b.Property<bool>("IsEdited");
 
-                    b.Property<Guid?>("OwnerGUID");
-
                     b.Property<int>("PostId");
+
+                    b.Property<Guid>("UserGuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerGUID");
-
                     b.HasIndex("PostId");
+
+                    b.HasIndex("UserGuid");
 
                     b.ToTable("Comments");
                 });
@@ -91,13 +91,14 @@ namespace GossipGastropodsBackEnd.Migrations
 
             modelBuilder.Entity("GossipGastropodsBackEnd.Entities.Comment", b =>
                 {
-                    b.HasOne("GossipGastropodsBackEnd.Entities.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerGUID");
-
                     b.HasOne("GossipGastropodsBackEnd.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GossipGastropodsBackEnd.Entities.User", "Owner")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserGuid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
