@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using GossipGastropodsBackEnd.Models;
 using GossipGastropodsBackEnd.Helpers;
 using GossipGastropodsBackEnd.Entities;
+using GossipGastropodsBackEnd.Models.Http.Responses;
 using GossipGastropodsBackEnd.Models.Http.Requests.Posts;
 
 namespace GossipGastropodsBackEnd.Controllers
@@ -38,7 +39,7 @@ namespace GossipGastropodsBackEnd.Controllers
             Comment comment = new Comment(request, currentUser, postId);
             context.Comments.Add(comment);
             context.SaveChanges();
-            return Ok(comment);
+            return Ok(new CommentResponse(comment, currentUser));
         }
     }
 }
