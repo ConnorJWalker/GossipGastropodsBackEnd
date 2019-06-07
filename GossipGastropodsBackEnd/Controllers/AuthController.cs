@@ -24,7 +24,7 @@ namespace GossipGastropodsBackEnd.Controllers
         [HttpPost("signup")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult SignUp(SignupRequest request)
+        public IActionResult SignUp([FromBody] SignupRequest request)
         {
             if (context.Users.FirstOrDefault(u => u.Email == request.Email.ToLower()) != null)
                 return BadRequest(new { Email = new[] { "Email already in use" } });
@@ -35,7 +35,7 @@ namespace GossipGastropodsBackEnd.Controllers
         [HttpPost("login")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult LogIn(LoginRequest request)
+        public IActionResult LogIn([FromBody] LoginRequest request)
         {
             object error = new { Error = "Incorrect email or password" };
             User user = context.Users.FirstOrDefault(u => u.Email == request.Email.ToLower());
