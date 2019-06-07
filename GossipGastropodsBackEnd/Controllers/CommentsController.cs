@@ -42,6 +42,25 @@ namespace GossipGastropodsBackEnd.Controllers
             return Ok(new CommentResponse(comment, currentUser));
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult EditComment(int id, [FromBody] NewCommentRequest request)
+        {
+            Comment comment = context.Comments.FirstOrDefault(c => c.Id == id);
+            if (comment == null)
+                return NotFound();
+            else if (comment.UserGuid != currentUser.GUID)
+                return Forbid();
+
+            comment.IsEdited = request.Body.ToLower() != comment.Body.ToLower();
+            comment.Body = request.Body;
+            context.SaveChanges();
+
+            return Ok(new CommentResponse(comment, currentUser));
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(403)]
