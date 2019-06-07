@@ -39,13 +39,32 @@ namespace GossipGastropodsBackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult NewPost(NewPostRequest request)
+        public IActionResult NewPost([FromBody] NewPostRequest request)
         {
             Post post = new Post(request, currentUser);
             context.Posts.Add(post);
             context.SaveChanges();
 
             return Created("", new PostResponse(post, currentUser));
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
+        public IActionResult EditPost(int id, [FromBody] NewPostRequest request)
+        {
+            Post post = context.Posts.Include(p => p.Owner)
+                .FirstOrDefault(p => p.Id == id);
+
+            if (post == null)
+                return NotFound();
+            else if (post.Owner.GUID != currentUser.GUID)
+                return Forbid();
+
+            post.Body = request.Body;
+            context.SaveChanges();
+            return Ok(new PostResponse(post));
         }
 
         [HttpDelete("{id}")]
