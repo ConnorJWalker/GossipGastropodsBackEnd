@@ -5,20 +5,33 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using GossipGastropodsBackEnd.Entities;
+using GossipGastropodsBackEnd.Models.Http.Requests.Auth;
 
 namespace GossipGastropodsBackEnd.Helpers
 {
     public interface IAuthService
     {
         string GenerateJwt(User user);
+        string SignUp(SignupRequest request);
     }
 
     public class AuthService : IAuthService
     {
         private readonly EnvironmentSettings env;
-        public AuthService(IOptions<EnvironmentSettings> env)
+        private readonly GossipContext context;
+        public AuthService(IOptions<EnvironmentSettings> env, GossipContext context)
         {
             this.env = env.Value;
+            this.context = context;
+        }
+
+        public string SignUp(SignupRequest request)
+        {
+            User user = new User(request, env.DefaultProfilePicture);
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            return GenerateJwt(user);
         }
 
         public string GenerateJwt(User user)
