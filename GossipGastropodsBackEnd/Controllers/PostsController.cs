@@ -6,9 +6,11 @@ using GossipGastropodsBackEnd.Entities;
 using GossipGastropodsBackEnd.Helpers;
 using GossipGastropodsBackEnd.Models;
 using GossipGastropodsBackEnd.Models.Http.Requests.Posts;
+using GossipGastropodsBackEnd.Models.Http.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GossipGastropodsBackEnd.Controllers
 {
@@ -24,6 +26,14 @@ namespace GossipGastropodsBackEnd.Controllers
         {
             this.context = context;
             currentUser = httpContext.GetCurrentUser();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(200)]
+        public IActionResult GetPosts()
+        {
+            List<Post> posts = context.Posts.Include(p => p.Owner).ToList();
+            return Ok(PostResponse.GetResponseList(posts));
         }
 
         [HttpPost]
