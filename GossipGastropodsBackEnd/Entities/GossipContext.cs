@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GossipGastropodsBackEnd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GossipGastropodsBackEnd.Entities
 {
@@ -10,7 +11,10 @@ namespace GossipGastropodsBackEnd.Entities
         {
             modelBuilder.Entity<User>().HasKey(u => u.GUID);
 
-            modelBuilder.Entity<Post>().HasKey(p => p.Id);
+            modelBuilder.Entity<PostBase>().HasKey(p => p.Id);
+            modelBuilder.Entity<PostBase>().HasDiscriminator<string>("PostType");
+
+
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.Owner)
                 .WithMany(u => u.Posts)
@@ -19,7 +23,6 @@ namespace GossipGastropodsBackEnd.Entities
                 .HasMany(p => p.Comments)
                 .WithOne(c => c.Post);
 
-            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
@@ -28,10 +31,21 @@ namespace GossipGastropodsBackEnd.Entities
                 .HasOne(c => c.Owner)
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserGuid);
+
+            modelBuilder.Entity<Like>().HasKey(l => l.Id);
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Owner)
+                .WithMany(u => u.Likes)
+                .HasForeignKey(l => l.UserGuid);
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Post)
+                .WithMany(p => p.Likes)
+                .HasForeignKey(l => l.PostId);
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
     }
 }

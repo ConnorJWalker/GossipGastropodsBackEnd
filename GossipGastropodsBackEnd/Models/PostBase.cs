@@ -1,8 +1,6 @@
-﻿using GossipGastropodsBackEnd.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GossipGastropodsBackEnd.Entities;
 
 namespace GossipGastropodsBackEnd.Models
 {
@@ -15,6 +13,7 @@ namespace GossipGastropodsBackEnd.Models
         public DateTime CreatedAt { get; set; }
 
         public User Owner { get; set; }
+        public List<Like> Likes { get; set; }
 
         public PostBase() { }
 

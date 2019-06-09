@@ -17,6 +17,7 @@ namespace GossipGastropodsBackEnd.Entities
 
         public List<Post> Posts { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<Like> Likes { get; set; }
 
         public User() { }
 
