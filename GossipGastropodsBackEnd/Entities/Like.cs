@@ -20,5 +20,14 @@ namespace GossipGastropodsBackEnd.Entities
 
         public User Owner { get; set; }
         public PostBase Post { get; set; }
+
+        public Like() { }
+
+        public Like(int postId, CurrentUser user, PostType type)
+        {
+            PostId = postId;
+            UserGuid = user.GUID;
+            PostType = type;
+        }
     }
 }
