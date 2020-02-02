@@ -3,7 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GossipGastropodsBackEnd.Entities
 {
-    public class GossipContext : DbContext
+    public interface IGossipContext
+    {
+        DbSet<User> Users { get; set; }
+        DbSet<Post> Posts { get; set; }
+        DbSet<Comment> Comments { get; set; }
+        DbSet<Like> Likes { get; set; }
+    }
+
+    public class GossipContext : DbContext, IGossipContext
     {
         public GossipContext(DbContextOptions<GossipContext> options) : base(options) { }
 
